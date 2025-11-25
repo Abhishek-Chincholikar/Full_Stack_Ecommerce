@@ -11,7 +11,8 @@ app.use(express.json());
 app.use(cors());
 
 // Database Connection With MongoDB
-mongoose.connect("mongodb+srv://9869abhishek_db_user:1234QuickCartPROJECT@quickcart.xalnwdb.mongodb.net/e-commerce");
+// We use 'process.env.MONGO_URL' to load the secret from Render safely
+mongoose.connect(process.env.MONGO_URL);
 
 // paste your mongoDB Connection string above with password
 // password should not contain '@' special character
