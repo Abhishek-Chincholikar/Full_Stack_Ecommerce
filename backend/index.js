@@ -14,8 +14,6 @@ app.use(cors());
 // We use 'process.env.MONGO_URL' to load the secret from Render safely
 mongoose.connect(process.env.MONGO_URL);
 
-// paste your mongoDB Connection string above with password
-// password should not contain '@' special character
 
 
 //Image Storage Engine 
