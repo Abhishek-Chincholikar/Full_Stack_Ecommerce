@@ -11,9 +11,9 @@ const Offers = () => {
         <p>ONLY ON BEST SELLERS PRODUCTS</p>
         <button>Check now</button>
       </div>
-      <div className="offers-right">
+      {/* <div className="offers-right">
         <img src={exclusive_image} alt="" />
-      </div>
+      </div> */}
     </div>
   );
 };

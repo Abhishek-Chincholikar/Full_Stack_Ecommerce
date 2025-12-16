@@ -16,10 +16,10 @@ const Footer = () => {
       </div>
       <ul className="footer-links">
         {/* <li>Company</li> */}
-        <a href="/products"><li>Products</li></a>
+        {/* <a href={Product}><li>Products</li></a> */}
         {/* <li>Offices</li> */}
         {/* <li>About</li> */}
-        <a href="/contact"><li>Contact</li></a>
+        {/* <a href="/contact"><li>Contact</li></a> */}
       </ul>
       {/* <div className="footer-social-icons">
         <div className="footer-icons-container">
