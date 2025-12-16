@@ -65,8 +65,8 @@ const Contact = () => {
   };
 
   return (
-    <div className='contact'>
-      <div className="contact-container">
+    <div className='contact' >
+      <div className="contact-container" style={{padding:"50px"}}>
         <h1>Get in Touch</h1>
         <p>We'd love to hear from you! Send us a message below.</p>
         <div className="contact-fields">
