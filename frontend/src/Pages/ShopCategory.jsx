@@ -23,7 +23,7 @@ const ShopCategory = (props) => {
       <img src={props.banner} className="shopcategory-banner" alt="" />
       <div className="shopcategory-indexSort">
         <p>Showing Products</p>
-        <div className="shopcategory-sort">Sort by  <img src={dropdown_icon} alt="" /></div>
+        {/* <div className="shopcategory-sort">Sort by  <img src={dropdown_icon} alt="" /></div> */}
       </div>
       <div className="shopcategory-products">
         {allproducts.map((item,i) => {
