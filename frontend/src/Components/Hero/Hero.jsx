@@ -4,7 +4,7 @@ import hero_image from "../Assets/hero_image.png";
 import hand_icon from "../Assets/hand_icon.png";
 import arrow_icon from "../Assets/arrow.png";
 
-const Hero = () => {
+const Hero = (props) => { // Accept props here
   return (
     <div className="hero">
       <div className="hero-left">
@@ -17,12 +17,13 @@ const Hero = () => {
           <p>collections</p>
           <p>for everyone</p>
         </div>
-        <a href="#newcollections" style={{ textDecoration: 'none' }}>
-          <div className="hero-latest-btn">
-            <div>Latest Collection</div>
-            <img src={arrow_icon} alt="" />
-          </div>
-        </a>
+        
+        {/* CORRECTED: Use button/div with onClick calling the passed function */}
+        <div className="hero-latest-btn" onClick={props.onScrollClick}>
+          <div>Latest Collection</div>
+          <img src={arrow_icon} alt="" />
+        </div>
+        
       </div>
       <div className="hero-right">
         <img src={hero_image} alt="hero" />
