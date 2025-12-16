@@ -39,7 +39,7 @@
 
 
 
-import React, { useEffect, useState, useRef } from 'react' // 1. IMPORT useRef
+import React, { useEffect, useState, useRef } from 'react' 
 import Hero from '../Components/Hero/Hero'
 import Popular from '../Components/Popular/Popular'
 import Offers from '../Components/Offers/Offers'
@@ -51,7 +51,7 @@ const Shop = () => {
     const [popular, setPopular] = useState([]);
     const [newcollection, setNewCollection] = useState([]);
     
-    // 2. CREATE THE REF
+   
     const newCollectionsRef = useRef(null); 
 
     const fetchInfo = () => { 
@@ -67,7 +67,6 @@ const Shop = () => {
         fetchInfo();
     }, [])
 
-    // 3. CREATE THE SCROLL FUNCTION AND PASS IT TO HERO
     const scrollToNewCollections = () => {
         if (newCollectionsRef.current) {
             newCollectionsRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -77,11 +76,9 @@ const Shop = () => {
 
     return (
         <div>
-            {/* 4. PASS THE SCROLL FUNCTION TO THE HERO */}
             <Hero onScrollClick={scrollToNewCollections} /> 
             <Popular data={popular} />
             <Offers />
-            {/* 5. ATTACH THE REF TO THE NEWCOLLECTIONS COMPONENT */}
             <NewCollections ref={newCollectionsRef} data={newcollection} /> 
             <NewsLetter />
         </div>
