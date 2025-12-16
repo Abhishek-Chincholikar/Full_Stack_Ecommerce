@@ -1,5 +1,6 @@
 import React from 'react'
 import './Footer.css'
+import { Link } from 'react-router-dom';
 
 import footer_logo from '../Assets/logo_big.png'
 // import instagram_icon from '../Assets/instagram_icon.png'
@@ -19,7 +20,9 @@ const Footer = () => {
         {/* <a href={Product}><li>Products</li></a> */}
         {/* <li>Offices</li> */}
         {/* <li>About</li> */}
-        {/* <a href="/contact"><li>Contact</li></a> */}
+        <li>
+      <Link to='/contact' style={{ textDecoration: 'none', color: 'inherit' }}>Contact</Link>
+        </li>
       </ul>
       {/* <div className="footer-social-icons">
         <div className="footer-icons-container">
