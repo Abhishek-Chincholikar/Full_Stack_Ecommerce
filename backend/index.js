@@ -16,9 +16,12 @@ app.use(cors());
 // We use 'process.env.MONGO_URL' to load the secret from Render safely
 mongoose.connect(process.env.MONGO_URL);
 
-// Configure the Transporter
+// Updated Transporter for Render/Gmail
 const transporter = nodemailer.createTransport({
   service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // Use SSL/TLS
   auth: {
     user: process.env.EMAIL_USER, 
     pass: process.env.EMAIL_PASS  
