@@ -16,15 +16,17 @@ app.use(cors());
 // We use 'process.env.MONGO_URL' to load the secret from Render safely
 mongoose.connect(process.env.MONGO_URL);
 
-// Updated Transporter for Render/Gmail
+// Updated Transporter for Render using Port 587
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
   host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, // Use SSL/TLS
+  port: 587,
+  secure: false, // Must be false for Port 587
   auth: {
     user: process.env.EMAIL_USER, 
     pass: process.env.EMAIL_PASS  
+  },
+  tls: {
+    rejectUnauthorized: false // Helps bypass certain network restrictions
   }
 });
 
