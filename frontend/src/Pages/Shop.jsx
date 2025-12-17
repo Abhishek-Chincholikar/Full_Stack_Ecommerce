@@ -80,7 +80,7 @@ const Shop = () => {
             <Popular data={popular} />
             <Offers />
             <NewCollections ref={newCollectionsRef} data={newcollection} /> 
-            <NewsLetter />
+            {/* <NewsLetter /> */}
         </div>
     )
 }
