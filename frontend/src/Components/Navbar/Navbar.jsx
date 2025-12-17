@@ -4,14 +4,12 @@ import { Link } from 'react-router-dom'
 import logo from '../Assets/logo.png'
 import cart_icon from '../Assets/cart_icon.png'
 import nav_dropdown from '../Assets/nav_dropdown.png'
-// 1. IMPORT YOUR NEW ICON HERE
 import profile_icon from '../Assets/profile_icon2.jpg' 
 import { ShopContext } from '../../Context/ShopContext'
 
 const Navbar = () => {
 
   let [menu, setMenu] = useState("shop");
-  // 2. NEW STATE: To toggle the profile dropdown
   const [showProfile, setShowProfile] = useState(false); 
 
   const { getTotalCartItems } = useContext(ShopContext);
@@ -22,7 +20,6 @@ const Navbar = () => {
     e.target.classList.toggle('open');
   }
 
-  // 3. Helper function to handle logout
   const handleLogout = () => {
     localStorage.removeItem('auth-token');
     window.location.replace("/");
@@ -61,7 +58,6 @@ const Navbar = () => {
               {/* Only show this UL if showProfile is true */}
               {showProfile && (
                 <ul className="nav-profile-dropdown">
-                  {/* --- NEW CHANGE: This is the "Hii Username" part --- */}
                   <li className="nav-profile-name">
                     Hii, {localStorage.getItem('username') || "User"} 👋
                   </li>

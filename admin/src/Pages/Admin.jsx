@@ -4,6 +4,7 @@ import Sidebar from "../Components/Sidebar/Sidebar";
 import AddProduct from "../Components/AddProduct/AddProduct";
 import { Route, Routes } from "react-router-dom";
 import ListProduct from "../Components/ListProduct/ListProduct";
+import EditProduct from "../Components/EditProduct/EditProduct";
 
 const Admin = () => {
 
@@ -13,6 +14,7 @@ const Admin = () => {
       <Routes>
         <Route path="/addproduct" element={<AddProduct />} />
         <Route path="/listproduct" element={<ListProduct />} />
+        <Route path="/editproduct" element={<EditProduct />} /> 
       </Routes>
     </div>
   );

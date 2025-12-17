@@ -56,3 +56,25 @@
     height: 60px;
 }
 }
+
+/* Container to hold both buttons side-by-side */
+.listproduct-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Adds space between the Edit button and the X icon */
+}
+
+/* Styling for the new Edit button */
+.listproduct-edit-btn {
+  padding: 5px 15px;
+  border: none;
+  background-color: #6079ff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.listproduct-edit-btn:hover {
+  background-color: #3f55d6;
+}

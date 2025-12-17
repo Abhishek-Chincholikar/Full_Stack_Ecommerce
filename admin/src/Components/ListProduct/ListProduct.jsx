@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./ListProduct.css";
-import cross_icon from '../Assets/cross_icon.png'
+import cross_icon from '../Assets/cross_icon.png';
 import { backend_url, currency } from "../../App";
+import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
 
 const ListProduct = () => {
   const [allproducts, setAllProducts] = useState([]);
+  
+  const navigate = useNavigate(); // 2. Initialize hook
 
   const fetchInfo = () => {
     fetch(`${backend_url}/allproducts`)
       .then((res) => res.json())
-      .then((data) => setAllProducts(data))
-  }
+      .then((data) => setAllProducts(data));
+  };
 
   useEffect(() => {
     fetchInfo();
-  }, [])
+  }, []);
 
   const removeProduct = async (id) => {
     await fetch(`${backend_url}/removeproduct`, {
@@ -24,16 +27,25 @@ const ListProduct = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ id: id }),
-    })
-
+    });
     fetchInfo();
-  }
+  };
+
+  // 3. New function to handle navigation to Edit page
+  const editProduct = (id) => {
+    navigate('/editproduct', { state: { id: id } });
+  };
 
   return (
     <div className="listproduct">
       <h1>All Products List</h1>
       <div className="listproduct-format-main">
-        <p>Products</p> <p>Title</p> <p>Old Price</p> <p>New Price</p> <p>Category</p> <p>Remove</p>
+        <p>Products</p>
+        <p>Title</p>
+        <p>Old Price</p>
+        <p>New Price</p>
+        <p>Category</p>
+        <p>Actions</p> {/* 4. Changed 'Remove' to 'Actions' */}
       </div>
       <div className="listproduct-allproducts">
         <hr />
@@ -45,7 +57,18 @@ const ListProduct = () => {
               <p>{currency}{e.old_price}</p>
               <p>{currency}{e.new_price}</p>
               <p>{e.category}</p>
-              <img className="listproduct-remove-icon" onClick={() => { removeProduct(e.id) }} src={cross_icon} alt="" />
+              
+              {/* 5. Grouped Edit and Remove buttons in one container */}
+              <div className="listproduct-actions">
+                <button onClick={() => editProduct(e.id)} className="listproduct-edit-btn">Edit</button>
+                <img 
+                    onClick={() => { removeProduct(e.id) }} 
+                    className="listproduct-remove-icon" 
+                    src={cross_icon} 
+                    alt="remove" 
+                />
+              </div>
+              
             </div>
             <hr />
           </div>

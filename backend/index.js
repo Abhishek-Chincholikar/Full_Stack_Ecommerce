@@ -286,7 +286,29 @@ app.post('/myorders', fetchuser, async (req, res) => {
     }
 });
 
+// Schema for updating product
+app.post("/updateproduct", async (req, res) => {
+  const { id, name, description, image, category, new_price, old_price } = req.body;
+  
+  // Find the product by your custom 'id' and update it
+  await Product.findOneAndUpdate({ id: id }, {
+    name: name,
+    description: description,
+    image: image,
+    category: category,
+    new_price: new_price,
+    old_price: old_price
+  });
 
+  console.log("Product Updated");
+  res.json({ success: true, name: name });
+});
+
+// Endpoint to get a single product by ID (for pre-filling the edit form)
+app.post("/getproduct", async (req, res) => {
+  const product = await Product.findOne({ id: req.body.id });
+  res.json(product);
+});
 
 // Starting Express Server
 app.listen(port, (error) => {
