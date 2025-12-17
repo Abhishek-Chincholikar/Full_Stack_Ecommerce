@@ -240,6 +240,55 @@ app.post("/removeproduct", async (req, res) => {
   res.json({ success: true, name: req.body.name })
 });
 
+
+// 1. Schema for creating Orders
+const Order = mongoose.model("Order", {
+    userId: { type: String, required: true },
+    items: { type: Array, required: true }, // Array of product objects
+    amount: { type: Number, required: true },
+    status: { type: String, default: "Order Placed" },
+    date: { type: Date, default: Date.now() },
+    paymentMethod: { type: String, default: "COD" }
+});
+
+// 2. Endpoint to Place an Order (Checkout)
+app.post('/placeorder', fetchuser, async (req, res) => {
+    try {
+        let userData = await Users.findOne({ _id: req.user.id });
+        const { items, amount } = req.body;
+
+        // Create the new order
+        const order = new Order({
+            userId: req.user.id,
+            items: items,
+            amount: amount,
+        });
+        await order.save();
+
+        let cart = {};
+        for (let i = 0; i < 300; i++) { cart[i] = 0; }
+        await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: cart });
+
+        res.json({ success: true, message: "Order Placed Successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, errors: "Error Placing Order" });
+    }
+});
+
+// 3. Endpoint to fetch User's Orders
+app.post('/myorders', fetchuser, async (req, res) => {
+    try {
+        // Find all orders where userId matches the logged-in user
+        const orders = await Order.find({ userId: req.user.id }).sort({ date: -1 });
+        res.json(orders);
+    } catch (error) {
+        res.status(500).send("Server Error");
+    }
+});
+
+
+
 // Starting Express Server
 app.listen(port, (error) => {
   if (!error) console.log("Server Running on port " + port);
