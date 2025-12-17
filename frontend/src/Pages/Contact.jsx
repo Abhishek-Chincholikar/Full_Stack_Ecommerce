@@ -1,67 +1,72 @@
-// import React from 'react'
-// import './CSS/Contact.css'
-
-// const Contact = () => {
-//   return (
-//     <div className='contact'>
-//       <div className="contact-container">
-//         <h1>Get in Touch</h1>
-//         <p>We'd love to hear from you! Send us a message below.</p>
-//         <div className="contact-fields">
-//           <input type="text" placeholder='Your Name' />
-//           <input type="email" placeholder='Email Address' />
-//           <textarea placeholder='Type your message here...' rows="6"></textarea>
-//           <button>Submit Message</button>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default Contact
-import React, { useState } from 'react'; // <-- IMPORT useState
+import React, { useState } from 'react';
+import Swal from 'sweetalert2'; // 1. Import SweetAlert2
 import './CSS/Contact.css';
 
 const Contact = () => {
-  // 1. STATE TO HOLD FORM DATA
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: ""
   });
 
-  // Handler to update state as user types
+  const [isSending, setIsSending] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 2. HANDLER TO SUBMIT DATA (This is where the API call goes)
   const handleSubmit = async () => {
-    console.log("Submitting form data:", formData);
-    
-    // --- THIS IS WHERE YOU ADD YOUR API CALL ---
-    /*
-    let responseData;
-    await fetch('YOUR_BACKEND_URL/sendcontact', {
+    if (!formData.name || !formData.email || !formData.message) {
+      // Custom Error Popup
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please fill out all fields!',
+        confirmButtonColor: '#ff4141'
+      });
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      const response = await fetch('https://quick-cart-backend-z224.onrender.com/sendcontact', {
         method: 'POST',
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-    }).then((response) => response.json()).then((data) => responseData = data);
-    
-    if (responseData.success) {
-        alert("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "" }); // Clear form
-    } else {
-        alert("Failed to send message. Please try again.");
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // 2. SUCCESS ANIMATION POPUP
+        Swal.fire({
+          icon: 'success',
+          title: 'Sent!',
+          text: data.message,
+          showConfirmButton: false,
+          timer: 3000, // Closes automatically after 3 seconds
+          iconColor: '#ff4141'
+        });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.message || "Something went wrong.",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Connection Error',
+        text: 'Could not reach the server.',
+      });
+    } finally {
+      setIsSending(false);
     }
-    */
-    
-    // For now, we'll just show an alert until the backend is ready
-    alert(`Thank you, ${formData.name}! Your message has been noted.`);
-    setFormData({ name: "", email: "", message: "" }); // Clear the form
   };
 
   return (
@@ -70,31 +75,39 @@ const Contact = () => {
         <h1>Get in Touch</h1>
         <p>We'd love to hear from you! Send us a message below.</p>
         <div className="contact-fields">
-          {/* Inputs now tied to state and handler */}
           <input 
             type="text" 
             placeholder='Your Name' 
-            name="name" // ADDED name attribute
+            name="name" 
             value={formData.name}
             onChange={handleChange}
           />
           <input 
             type="email" 
             placeholder='Email Address' 
-            name="email" // ADDED name attribute
+            name="email" 
             value={formData.email}
             onChange={handleChange}
           />
           <textarea 
             placeholder='Type your message here...' 
             rows="6"
-            name="message" // ADDED name attribute
+            name="message" 
             value={formData.message}
             onChange={handleChange}
           ></textarea>
           
-          {/* Button now calls the handler */}
-          <button onClick={handleSubmit}>Submit Message</button>
+          <button 
+            onClick={handleSubmit} 
+            disabled={isSending}
+            style={{ 
+              backgroundColor: isSending ? "#ccc" : "#ff4141", 
+              cursor: isSending ? "not-allowed" : "pointer",
+              transition: "0.3s"
+            }}
+          >
+            {isSending ? "Sending..." : "Submit Message"}
+          </button>
         </div>
       </div>
     </div>
