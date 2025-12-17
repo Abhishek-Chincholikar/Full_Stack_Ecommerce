@@ -10,7 +10,7 @@ const LoginSignup = () => {
     setFormData({...formData,[e.target.name]:e.target.value});
     }
 
-  const login = async () => {
+const login = async () => {
     let dataObj;
     await fetch('https://quick-cart-backend-z224.onrender.com/login', {
       method: 'POST',
@@ -22,9 +22,20 @@ const LoginSignup = () => {
     })
       .then((resp) => resp.json())
       .then((data) => {dataObj=data});
+      
       console.log(dataObj);
+      
       if (dataObj.success) {
         localStorage.setItem('auth-token',dataObj.token);
+        
+        // --- NEW CHANGE START ---
+        // If your backend sends the name, we save it. 
+        // (If your backend doesn't send 'name', this will just stay undefined)
+        if(dataObj.name) {
+            localStorage.setItem('username', dataObj.name);
+        }
+        // --- NEW CHANGE END ---
+
         window.location.replace("/");
       }
       else
@@ -48,6 +59,12 @@ const LoginSignup = () => {
 
       if (dataObj.success) {
         localStorage.setItem('auth-token',dataObj.token);
+
+        // --- NEW CHANGE START ---
+        // Since the user just typed their name to sign up, we save it directly!
+        localStorage.setItem('username', formData.username);
+        // --- NEW CHANGE END ---
+
         window.location.replace("/");
       }
       else
@@ -55,7 +72,6 @@ const LoginSignup = () => {
         alert(dataObj.errors)
       }
   }
-
   return (
     <div className="loginsignup">
       <div className="loginsignup-container">

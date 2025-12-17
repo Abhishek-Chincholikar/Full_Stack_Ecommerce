@@ -3,14 +3,18 @@ import './Navbar.css'
 import { Link } from 'react-router-dom'
 import logo from '../Assets/logo.png'
 import cart_icon from '../Assets/cart_icon.png'
-import { ShopContext } from '../../Context/ShopContext'
 import nav_dropdown from '../Assets/nav_dropdown.png'
+// 1. IMPORT YOUR NEW ICON HERE
+import profile_icon from '../Assets/profile_icon2.jpg' 
+import { ShopContext } from '../../Context/ShopContext'
 
 const Navbar = () => {
 
-  let [menu,setMenu] = useState("shop");
-  const {getTotalCartItems} = useContext(ShopContext);
+  let [menu, setMenu] = useState("shop");
+  // 2. NEW STATE: To toggle the profile dropdown
+  const [showProfile, setShowProfile] = useState(false); 
 
+  const { getTotalCartItems } = useContext(ShopContext);
   const menuRef = useRef();
 
   const dropdown_toggle = (e) => {
@@ -18,26 +22,66 @@ const Navbar = () => {
     e.target.classList.toggle('open');
   }
 
+  // 3. Helper function to handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('auth-token');
+    window.location.replace("/");
+  }
+
   return (
     <div className='nav'>
-      <Link to='/' onClick={()=>{setMenu("shop")}} style={{ textDecoration: 'none' }} className="nav-logo">
+      <Link to='/' onClick={() => { setMenu("shop") }} style={{ textDecoration: 'none' }} className="nav-logo">
         <img src={logo} alt="logo" />
         <p>Quick-Cart</p>
       </Link>
-      <img onClick={dropdown_toggle} className='nav-dropdown' src={nav_dropdown} alt="" />
-      <ul ref={menuRef} className="nav-menu">
-        {/* <li onClick={()=>{setMenu("shop")}}><Link to='/' style={{ textDecoration: 'none' }}>Shop</Link>{menu==="shop"?<hr/>:<></>}</li> */}
-        <li onClick={()=>{setMenu("mens")}}><Link to='/mens' style={{ textDecoration: 'none' }}>Men</Link>{menu==="mens"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("womens")}}><Link to='/womens' style={{ textDecoration: 'none' }}>Women</Link>{menu==="womens"?<hr/>:<></>}</li>
-        <li onClick={()=>{setMenu("kids")}}><Link to='/kids' style={{ textDecoration: 'none' }}>Kids</Link>{menu==="kids"?<hr/>:<></>}</li>
-            <Link to='/contact' style={{ textDecoration: 'none', color: 'inherit' }}>Contact</Link>
       
+      <img onClick={dropdown_toggle} className='nav-dropdown' src={nav_dropdown} alt="" />
+      
+      <ul ref={menuRef} className="nav-menu">
+        <li onClick={() => { setMenu("mens") }}><Link to='/mens' style={{ textDecoration: 'none' }}>Men</Link>{menu === "mens" ? <hr /> : <></>}</li>
+        <li onClick={() => { setMenu("womens") }}><Link to='/womens' style={{ textDecoration: 'none' }}>Women</Link>{menu === "womens" ? <hr /> : <></>}</li>
+        <li onClick={() => { setMenu("kids") }}><Link to='/kids' style={{ textDecoration: 'none' }}>Kids</Link>{menu === "kids" ? <hr /> : <></>}</li>
+        <Link to='/contact' style={{ textDecoration: 'none', color: 'inherit' }}>Contact</Link>
       </ul>
+
       <div className="nav-login-cart">
+        {/* CHECK IF USER IS LOGGED IN */}
         {localStorage.getItem('auth-token')
-        ?<button onClick={()=>{localStorage.removeItem('auth-token');window.location.replace("/");}}>Logout</button>
-        :<Link to='/login' style={{ textDecoration: 'none' }}><button>Login</button></Link>}
-        <Link to="/cart"><img src={cart_icon} alt="cart"/></Link>
+          ? (
+            // IF LOGGED IN: SHOW PROFILE ICON WITH DROPDOWN
+            <div className="nav-profile-container">
+              {/* Clicking image toggles the showProfile state */}
+              <img 
+                src={profile_icon} 
+                alt="profile" 
+                className="nav-profile-icon" 
+                onClick={() => setShowProfile(!showProfile)} 
+              />
+              
+              {/* Only show this UL if showProfile is true */}
+              {showProfile && (
+                <ul className="nav-profile-dropdown">
+                  {/* --- NEW CHANGE: This is the "Hii Username" part --- */}
+                  <li className="nav-profile-name">
+                    Hii, {localStorage.getItem('username') || "User"} 👋
+                  </li>
+                  {/* --------------------------------------------------- */}
+                  
+                  <li><Link to='/orders' style={{ textDecoration: 'none', color: 'inherit' }}>Orders</Link></li>
+                  <li onClick={handleLogout}>Sign Out</li>
+                </ul>
+              )}
+            </div>
+          )
+          : (
+            // IF NOT LOGGED IN: SHOW LOGIN BUTTON
+            <Link to='/login' style={{ textDecoration: 'none' }}>
+              <button>Login</button>
+            </Link>
+          )
+        }
+
+        <Link to="/cart"><img src={cart_icon} alt="cart" /></Link>
         <div className="nav-cart-count">{getTotalCartItems()}</div>
       </div>
     </div>

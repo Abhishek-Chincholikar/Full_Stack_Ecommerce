@@ -1,0 +1,40 @@
+.orders-container {
+    width: 80%;
+    margin: 50px auto;
+    min-height: 60vh;
+}
+.orders-container h1 {
+    margin-bottom: 30px;
+    font-size: 32px;
+    color: #333;
+}
+.order-item {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.order-status {
+    color: green;
+    font-weight: 600;
+}
+.order-products p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+.order-total {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: right;
+}

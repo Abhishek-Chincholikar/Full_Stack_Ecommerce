@@ -10,6 +10,7 @@ import men_banner from "./Components/Assets/banner_mens.png";
 import kid_banner from "./Components/Assets/banner_kids.png";
 import LoginSignup from "./Pages/LoginSignup";
 import Contact from './Pages/Contact';
+import Orders from './Pages/Orders';
 
 export const backend_url = 'https://quick-cart-backend-z224.onrender.com';
 export const currency = '₹';
@@ -28,6 +29,7 @@ function App() {
           <Route path='/product' element={<Product />}>
             <Route path=':productId' element={<Product />} />
           </Route>
+          <Route path='/orders' element={<Orders/>} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<LoginSignup/>} />
           <Route path='/contact' element={<Contact/>} />
