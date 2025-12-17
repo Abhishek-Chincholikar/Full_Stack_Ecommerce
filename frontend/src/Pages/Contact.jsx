@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Swal from 'sweetalert2'; // 1. Import SweetAlert2
+import Swal from 'sweetalert2';
+import emailjs from '@emailjs/browser';
 import './CSS/Contact.css';
 
 const Contact = () => {
@@ -17,7 +18,6 @@ const Contact = () => {
 
   const handleSubmit = async () => {
     if (!formData.name || !formData.email || !formData.message) {
-      // Custom Error Popup
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -29,40 +29,39 @@ const Contact = () => {
 
     setIsSending(true);
 
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      time: new Date().toLocaleString(), 
+    };
+
     try {
-      const response = await fetch('https://quick-cart-backend-z224.onrender.com/sendcontact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        // 2. SUCCESS ANIMATION POPUP
+      // Using your verified IDs
+      const result = await emailjs.send(
+        'service_zg5okmg', 
+        'template_e9ccttr', 
+        templateParams, 
+        'n0v6h6HccDWMHPWpN'
+      );
+
+      if (result.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Sent!',
-          text: data.message,
+          text: 'Thank you! Your message has been sent successfully.',
           showConfirmButton: false,
-          timer: 3000, // Closes automatically after 3 seconds
+          timer: 3000,
           iconColor: '#ff4141'
         });
         setFormData({ name: "", email: "", message: "" });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: data.message || "Something went wrong.",
-        });
       }
     } catch (error) {
+      console.error("EmailJS Error:", error);
       Swal.fire({
         icon: 'error',
-        title: 'Connection Error',
-        text: 'Could not reach the server.',
+        title: 'Error',
+        text: 'Failed to send message. Please try again later.',
       });
     } finally {
       setIsSending(false);

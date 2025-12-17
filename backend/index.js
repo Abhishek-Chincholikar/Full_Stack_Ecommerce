@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const nodemailer = require('nodemailer');
 const port = process.env.PORT || 4000;
 
 app.use(express.json());
@@ -15,21 +14,6 @@ app.use(cors());
 // Database Connection With MongoDB
 // We use 'process.env.MONGO_URL' to load the secret from Render safely
 mongoose.connect(process.env.MONGO_URL);
-
-// Updated Transporter for Render using Port 2525
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 2525, // Try this non-standard port to bypass Render's firewall
-  secure: false, 
-  auth: {
-    user: process.env.EMAIL_USER, 
-    pass: process.env.EMAIL_PASS  
-  },
-  tls: {
-    rejectUnauthorized: false
-  },
-  connectionTimeout: 20000 // Increased to 20 seconds
-});
 
 
 //Image Storage Engine 
@@ -189,26 +173,6 @@ app.post("/relatedproducts", async (req, res) => {
   const products = await Product.find({ category });
   const arr = products.slice(0, 4);
   res.send(arr);
-});
-
-// Endpoint for contact form submission
-app.post('/sendcontact', async (req, res) => {
-  const { name, email, message } = req.body;
-
-  const mailOptions = {
-    from: email, 
-    to: process.env.EMAIL_USER, 
-    subject: `New Message from ${name} - Quick Cart`,
-    text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    res.json({ success: true, message: "Email sent successfully!" });
-  } catch (error) {
-    console.log("Email Error:", error);
-    res.json({ success: false, message: "Error sending email." });
-  }
 });
 
 
