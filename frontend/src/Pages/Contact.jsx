@@ -1,3 +1,4 @@
+//was explained by nikita
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import emailjs from '@emailjs/browser';
